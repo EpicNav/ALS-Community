@@ -101,15 +101,14 @@ void UALSMantleComponent::MantleStart(float MantleHeight, const FALSComponentAnd
 	MantleParams.AnimMontage = MantleAsset.AnimMontage;
 	MantleParams.PositionCorrectionCurve = MantleAsset.PositionCorrectionCurve;
 	MantleParams.StartingOffset = MantleAsset.StartingOffset;
-	MantleParams.StartingPosition = FMath::GetMappedRangeValueClamped({MantleAsset.LowHeight, MantleAsset.HighHeight},
-	                                                                  {
-		                                                                  MantleAsset.LowStartPosition,
-		                                                                  MantleAsset.HighStartPosition
-	                                                                  },
-	                                                                  MantleHeight);
-	MantleParams.PlayRate = FMath::GetMappedRangeValueClamped({MantleAsset.LowHeight, MantleAsset.HighHeight},
-	                                                          {MantleAsset.LowPlayRate, MantleAsset.HighPlayRate},
-	                                                          MantleHeight);
+	/** DOESN'T WORK WITH UE5.0 BRANCH */
+	// MantleParams.StartingPosition = FMath::GetMappedRangeValueClamped({ MantleAsset.LowHeight, MantleAsset.HighHeight }, { MantleAsset.LowStartPosition, MantleAsset.HighStartPosition}, MantleHeight);
+	// MantleParams.PlayRate = FMath::GetMappedRangeValueClamped({ MantleAsset.LowHeight, MantleAsset.HighHeight }, { MantleAsset.LowPlayRate, MantleAsset.HighPlayRate }, MantleHeight);
+
+	/** FIX FOR UE5.0 BRANCH */
+	MantleParams.StartingPosition = FMath::GetMappedRangeValueClamped(TRange<float>(MantleAsset.LowHeight, MantleAsset.HighHeight), TRange<float>(MantleAsset.LowStartPosition, MantleAsset.HighStartPosition), MantleHeight);
+	MantleParams.PlayRate = FMath::GetMappedRangeValueClamped(TRange<float>(MantleAsset.LowHeight, MantleAsset.HighHeight), TRange<float>(MantleAsset.LowPlayRate, MantleAsset.HighPlayRate), MantleHeight);
+	
 
 	// Step 2: Convert the world space target to the mantle component's local space for use in moving objects.
 	MantleLedgeLS.Component = MantleLedgeWS.Component;
